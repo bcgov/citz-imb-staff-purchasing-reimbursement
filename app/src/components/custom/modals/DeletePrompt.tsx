@@ -1,6 +1,6 @@
-import { bcgov } from '../../../constants/colours';
 import ActionButton from '../../bcgov/ActionButton';
 import { buttonStyles } from '../../bcgov/ButtonStyles';
+import { modalStyles } from './modalStyles';
 
 /**
  * @interface
@@ -25,15 +25,7 @@ interface DeletePromptProps {
 const DeletePrompt = (props: DeletePromptProps) => {
   const { deleteHandler, title, blurb, id } = props;
   return (
-    <dialog
-      id={id}
-      style={{
-        maxWidth: '25em',
-        width: '90%',
-        border: `solid ${bcgov.background} 3px`,
-        borderRadius: '10px',
-      }}
-    >
+    <dialog id={id} style={modalStyles.warningModalStyle}>
       <h4
         style={{
           marginBottom: '1em',

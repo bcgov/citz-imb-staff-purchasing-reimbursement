@@ -1,0 +1,48 @@
+### PATHS ###
+paths:
+  /jira/create:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - JIRA
+      summary: Creates a JIRA issue.
+      description: Creates a JIRA issue for the project backlog based on incoming user-submitted information.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: My new issue title!
+                description:
+                  type: string
+                  example: This part describes the issue in more detail.
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: '10069'
+                  key:
+                    type: string
+                    example: SPR-169
+                  self:
+                    type: string
+                    example: https://project-subdomain.atlassian.net/rest/api/3/issue/10069
+        '400':
+          description: Bad request response.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'JIRA Issue not created.'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'

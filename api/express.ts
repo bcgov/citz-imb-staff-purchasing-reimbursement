@@ -96,5 +96,6 @@ const routeProtector: RequestHandler | Promise<Response<any, Record<string, any>
   ? (falseProtect as RequestHandler)
   : protect;
 app.use('/api', routeProtector, protectedRouter.requests);
+app.use('/api', routeProtector, protectedRouter.jira);
 
 export default app;

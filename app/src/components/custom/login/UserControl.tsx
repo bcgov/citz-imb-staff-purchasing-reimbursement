@@ -11,6 +11,7 @@ import {
 import { useAuthService } from '../../../keycloak';
 import * as React from 'react';
 import { buttonStyles } from '../../bcgov/ButtonStyles';
+import { UserReport } from '../modals/UserReport';
 
 /**
  * @description Component based off MUI Menu: https://mui.com/material-ui/react-menu/
@@ -59,59 +60,71 @@ const UserControl = () => {
 
   if (user) {
     return (
-      <Stack direction='row' spacing={2}>
-        <div>
-          <Button
-            ref={anchorRef}
-            id='composition-button'
-            aria-controls={open ? 'composition-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup='true'
-            sx={{ ...buttonStyles.secondary }}
-            onClick={handleToggle}
-          >
-            {`${user.given_name} ${user.family_name}`}
-          </Button>
-          <Popper
-            open={open}
-            anchorEl={anchorRef.current}
-            role={undefined}
-            placement='bottom-start'
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin: placement === 'bottom-start' ? 'left top' : 'left bottom',
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList
-                      autoFocusItem={open}
-                      id='composition-menu'
-                      aria-labelledby='composition-button'
-                      onKeyDown={handleListKeyDown}
-                    >
-                      <MenuItem
-                        onClick={() => {
-                          window.location.href = getLogoutURL();
-                        }}
-                        aria-label='Logout'
-                        aria-description='Logs the user out of their account.'
+      <>
+        <Stack direction='row' spacing={2}>
+          <div>
+            <Button
+              ref={anchorRef}
+              id='composition-button'
+              aria-controls={open ? 'composition-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup='true'
+              sx={{ ...buttonStyles.secondary }}
+              onClick={handleToggle}
+            >
+              {`${user.given_name} ${user.family_name}`}
+            </Button>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              placement='bottom-start'
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin: placement === 'bottom-start' ? 'left top' : 'left bottom',
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList
+                        autoFocusItem={open}
+                        id='composition-menu'
+                        aria-labelledby='composition-button'
+                        onKeyDown={handleListKeyDown}
                       >
-                        Logout
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </div>
-      </Stack>
+                        <MenuItem
+                          onClick={() => {
+                            const thisDialog: HTMLDialogElement =
+                              document.querySelector(`#user-issue`)!;
+                            thisDialog.showModal();
+                          }}
+                        >
+                          Submit Issue
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            window.location.href = getLogoutURL();
+                          }}
+                          aria-label='Logout'
+                          aria-description='Logs the user out of their account.'
+                        >
+                          Logout
+                        </MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </div>
+        </Stack>
+        <UserReport />
+      </>
     );
   } else {
     return (
